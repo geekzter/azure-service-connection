@@ -32,7 +32,7 @@ Terraform employs a provider model which enables all changes to be made by a sin
 | Entra ID     | [azuread](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs)     | [Microsoft Graph API](https://learn.microsoft.com/graph/use-the-api) |
 
 [HCL](https://developer.hashicorp.com/terraform/language#about-the-terraform-language), the language used, is declarative and the tool is capable if inferring dependencies to create resources in order. This is the output from `terraform graph`:
-![Terraform graph](graph.png)
+![Terraform graph](visuals/terraform-graph.png)
 
 More information:
 
