@@ -60,7 +60,7 @@ sections:
 
 # see: https://terraform-docs.io/user-guide/configuration/output
 output:
-  file: README.md
+  file: ../README.md
   mode: inject
 #   template: |-
 #     <!-- BEGIN_TF_DOCS -->
