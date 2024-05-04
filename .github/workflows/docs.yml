@@ -25,6 +25,7 @@ jobs:
       with:
         config-file: doc-gen/.terraform-docs.yml
         working-dir: terraform
+        output-file: ../README.md
         output-format: markdown table
         git-push: false
 
