@@ -47,7 +47,7 @@ To understand how the Terraform configuration can be created in automation, revi
 
 ### Examples
 
-Below are common configurations. You can mix & match to create your own.
+Below are common configurations. You can mix & match these to create your own.
 
 #### Default configuration
 
