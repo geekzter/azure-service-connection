@@ -174,62 +174,62 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider_azuread) | 2.48.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider_azurerm) | 3.101.0 |
-| <a name="provider_external"></a> [external](#provider_external) | 2.3.3 |
-| <a name="provider_random"></a> [random](#provider_random) | 3.6.1 |
-| <a name="provider_terraform"></a> [terraform](#provider_terraform) | n/a |
+| azuread | 2.48.0 |
+| azurerm | 3.101.0 |
+| external | 2.3.3 |
+| random | 3.6.1 |
+| terraform | n/a |
 
 ### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_azure_role_assignments"></a> [azure_role_assignments](#module_azure_role_assignments) | ./modules/azure-access | n/a |
-| <a name="module_entra_app"></a> [entra_app](#module_entra_app) | ./modules/app-registration | n/a |
-| <a name="module_managed_identity"></a> [managed_identity](#module_managed_identity) | ./modules/managed-identity | n/a |
-| <a name="module_service_connection"></a> [service_connection](#module_service_connection) | ./modules/service-connection | n/a |
+| azure_role_assignments | ./modules/azure-access | n/a |
+| entra_app | ./modules/app-registration | n/a |
+| managed_identity | ./modules/managed-identity | n/a |
+| service_connection | ./modules/service-connection | n/a |
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_azdo_organization_url"></a> [azdo_organization_url](#input_azdo_organization_url) | The Azure DevOps organization URL (e.g. https://dev.azure.com/contoso) | `string` | n/a | yes |
-| <a name="input_azdo_project_name"></a> [azdo_project_name](#input_azdo_project_name) | The Azure DevOps project name to create the service connection in | `string` | n/a | yes |
-| <a name="input_azdo_creates_identity"></a> [azdo_creates_identity](#input_azdo_creates_identity) | Let Azure DevOps create identity for service connection | `bool` | `false` | no |
-| <a name="input_azure_role_assignments"></a> [azure_role_assignments](#input_azure_role_assignments) | Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription. | `set(object({scope=string, role=string}))` | `null` | no |
-| <a name="input_create_federation"></a> [create_federation](#input_create_federation) | Use workload identity federation instead of a App Registration secret | `bool` | `true` | no |
-| <a name="input_create_managed_identity"></a> [create_managed_identity](#input_create_managed_identity) | Creates a Managed Identity instead of a App Registration | `bool` | `false` | no |
-| <a name="input_entra_app_notes"></a> [entra_app_notes](#input_entra_app_notes) | Description to put in the Entra ID app registration notes field | `string` | `null` | no |
-| <a name="input_entra_app_owner_object_ids"></a> [entra_app_owner_object_ids](#input_entra_app_owner_object_ids) | Object ids of the users that will be co-owners of the Entra ID app registration | `list(string)` | `null` | no |
-| <a name="input_entra_secret_expiration_days"></a> [entra_secret_expiration_days](#input_entra_secret_expiration_days) | Secret expiration in days | `number` | `90` | no |
-| <a name="input_entra_security_group_names"></a> [entra_security_group_names](#input_entra_security_group_names) | Names of the security groups to add the service connection identity to | `list(string)` | `[]` | no |
-| <a name="input_entra_service_management_reference"></a> [entra_service_management_reference](#input_entra_service_management_reference) | IT Service Management Reference to add to the App Registration | `string` | `null` | no |
-| <a name="input_managed_identity_resource_group_id"></a> [managed_identity_resource_group_id](#input_managed_identity_resource_group_id) | The resource group to create the Managed Identity in | `string` | `null` | no |
-| <a name="input_resource_prefix"></a> [resource_prefix](#input_resource_prefix) | The prefix to put in front of resource names created | `string` | `"demo"` | no |
-| <a name="input_resource_suffix"></a> [resource_suffix](#input_resource_suffix) | The suffix to append to resource names created | `string` | `""` | no |
-| <a name="input_run_id"></a> [run_id](#input_run_id) | The ID that identifies the pipeline / workflow that invoked Terraform (used in CI/CD) | `number` | `null` | no |
+| azdo_organization_url | The Azure DevOps organization URL (e.g. https://dev.azure.com/contoso) | `string` | n/a | yes |
+| azdo_project_name | The Azure DevOps project name to create the service connection in | `string` | n/a | yes |
+| azdo_creates_identity | Let Azure DevOps create identity for service connection | `bool` | `false` | no |
+| azure_role_assignments | Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription. | `set(object({scope=string, role=string}))` | `null` | no |
+| create_federation | Use workload identity federation instead of a App Registration secret | `bool` | `true` | no |
+| create_managed_identity | Creates a Managed Identity instead of a App Registration | `bool` | `false` | no |
+| entra_app_notes | Description to put in the Entra ID app registration notes field | `string` | `null` | no |
+| entra_app_owner_object_ids | Object ids of the users that will be co-owners of the Entra ID app registration | `list(string)` | `null` | no |
+| entra_secret_expiration_days | Secret expiration in days | `number` | `90` | no |
+| entra_security_group_names | Names of the security groups to add the service connection identity to | `list(string)` | `[]` | no |
+| entra_service_management_reference | IT Service Management Reference to add to the App Registration | `string` | `null` | no |
+| managed_identity_resource_group_id | The resource group to create the Managed Identity in | `string` | `null` | no |
+| resource_prefix | The prefix to put in front of resource names created | `string` | `"demo"` | no |
+| resource_suffix | The suffix to append to resource names created | `string` | `""` | no |
+| run_id | The ID that identifies the pipeline / workflow that invoked Terraform (used in CI/CD) | `number` | `null` | no |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_azdo_project_id"></a> [azdo_project_id](#output_azdo_project_id) | The Azure DevOps project id the service connection was created in |
-| <a name="output_azdo_service_connection_id"></a> [azdo_service_connection_id](#output_azdo_service_connection_id) | The Azure DevOps service connection id |
-| <a name="output_azdo_service_connection_name"></a> [azdo_service_connection_name](#output_azdo_service_connection_name) | The Azure DevOps service connection name |
-| <a name="output_azdo_service_connection_url"></a> [azdo_service_connection_url](#output_azdo_service_connection_url) | The Azure DevOps service connection portal URL |
-| <a name="output_azure_role_assignments"></a> [azure_role_assignments](#output_azure_role_assignments) | Role assignments created for the service connection's identity |
-| <a name="output_azure_subscription_id"></a> [azure_subscription_id](#output_azure_subscription_id) | The Azure subscription id the service connection was granted access to |
-| <a name="output_azure_subscription_name"></a> [azure_subscription_name](#output_azure_subscription_name) | The Azure subscription name the service connection was granted access to |
-| <a name="output_entra_app_notes"></a> [entra_app_notes](#output_entra_app_notes) | Description provided in the app registration notes field |
-| <a name="output_identity_application_id"></a> [identity_application_id](#output_identity_application_id) | The app/client id of the service connection's identity |
-| <a name="output_identity_application_name"></a> [identity_application_name](#output_identity_application_name) | The name of the service connection's identity |
-| <a name="output_identity_federation_subject"></a> [identity_federation_subject](#output_identity_federation_subject) | The federation subject |
-| <a name="output_identity_issuer"></a> [identity_issuer](#output_identity_issuer) | The federation issuer |
-| <a name="output_identity_object_id"></a> [identity_object_id](#output_identity_object_id) | The object id of the service connection's identity |
-| <a name="output_identity_principal_id"></a> [identity_principal_id](#output_identity_principal_id) | The service principal id of the service connection's identity |
-| <a name="output_identity_principal_name"></a> [identity_principal_name](#output_identity_principal_name) | The service principal name of the service connection's identity |
-| <a name="output_identity_principal_url"></a> [identity_principal_url](#output_identity_principal_url) | The service principal portal url of the service connection's identity |
-| <a name="output_identity_secret"></a> [identity_secret](#output_identity_secret) | The secret of the service connection's identity |
-| <a name="output_identity_secret_end_date"></a> [identity_secret_end_date](#output_identity_secret_end_date) | The secret expiration date of the service connection's identity |
-| <a name="output_identity_url"></a> [identity_url](#output_identity_url) | The portal url of the service connection's identity |
+| azdo_project_id | The Azure DevOps project id the service connection was created in |
+| azdo_service_connection_id | The Azure DevOps service connection id |
+| azdo_service_connection_name | The Azure DevOps service connection name |
+| azdo_service_connection_url | The Azure DevOps service connection portal URL |
+| azure_role_assignments | Role assignments created for the service connection's identity |
+| azure_subscription_id | The Azure subscription id the service connection was granted access to |
+| azure_subscription_name | The Azure subscription name the service connection was granted access to |
+| entra_app_notes | Description provided in the app registration notes field |
+| identity_application_id | The app/client id of the service connection's identity |
+| identity_application_name | The name of the service connection's identity |
+| identity_federation_subject | The federation subject |
+| identity_issuer | The federation issuer |
+| identity_object_id | The object id of the service connection's identity |
+| identity_principal_id | The service principal id of the service connection's identity |
+| identity_principal_name | The service principal name of the service connection's identity |
+| identity_principal_url | The service principal portal url of the service connection's identity |
+| identity_secret | The secret of the service connection's identity |
+| identity_secret_end_date | The secret expiration date of the service connection's identity |
+| identity_url | The portal url of the service connection's identity |
 <!-- END_TF_DOCS -->
