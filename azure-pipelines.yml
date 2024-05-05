@@ -139,6 +139,9 @@ jobs:
     managedIdentityResourceGroupName: ${{ split(variables['System.CollectionUri'], '/')[3] }}-service-connections
 
   steps:
+  - checkout: self
+    submodules: true
+    
   - pwsh: terraform init
     displayName: 'Terraform init'
     workingDirectory: '$(terraformDirectory)'
