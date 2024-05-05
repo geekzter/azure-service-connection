@@ -68,9 +68,11 @@ variables:
 - name: repository
   value: 'azure-identity-scripts'
 - name: scriptDirectory
-  value: $(Build.SourcesDirectory)/scripts/azure-devops
+  value: $(Build.SourcesDirectory)/scripts
+- name: identityScriptDirectory
+  value: $(Build.SourcesDirectory)/identity/scripts/azure-devops/
 - name: terraformDirectory  
-  value: $(Build.SourcesDirectory)/terraform/azure-devops/create-service-connection
+  value: $(Build.SourcesDirectory)/terraform
 - name: TF_IN_AUTOMATION
   value: true
 - name: TF_INPUT
@@ -176,7 +178,7 @@ jobs:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
-        $(scriptDirectory)/identity/scripts/azure-devops/set_terraform_azurerm_vars.ps1
+        $(identityScriptDirectory)/set_terraform_azurerm_vars.ps1
 
         # List environment variables
         Get-ChildItem -Path Env: `
@@ -288,7 +290,7 @@ jobs:
         scriptType: pscore
         scriptLocation: inlineScript
         inlineScript: |
-          $(scriptDirectory)/identity/scripts/azure-devops/set_terraform_azurerm_vars.ps1
+          $(identityScriptDirectory)/set_terraform_azurerm_vars.ps1
           terraform destroy -auto-approve
         addSpnToEnvironment: true
         failOnStandardError: true
