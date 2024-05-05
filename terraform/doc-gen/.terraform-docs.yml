@@ -85,9 +85,11 @@ sort:
 
 # see: https://terraform-docs.io/user-guide/configuration/settings
 settings:
-  indent: 3
-  escape: false
+  anchor: false
   default: true
+  description: true
+  escape: false
+  indent: 3
   lockfile: true
   required: true
   sensitive: true
