@@ -147,7 +147,9 @@ Pre-requisites:
   - The user is member of a privileged Entra ID role e.g. [Application Developer](https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference#application-developer)
 - The user is an owner of the Azure subscription (so role assignment can be performed)
 
-#### App registration with short-lived secret and constrained RBAC
+#### App registration with short-lived secret and constrained
+
+![](visuals/app-secret-reader.png)
 
 This creates an Entra ID app registration with secret that expires after 1 hour:
 
