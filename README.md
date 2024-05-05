@@ -125,6 +125,8 @@ Pre-requisites:
 
 #### App registration with FIC and ITSM metadata
 
+![](visuals/app-fic.png)
+
 This creates an Entra ID app registration with IT service reference and notes fields populated as well as specifying co-owners:
 
 ```hcl
