@@ -70,7 +70,7 @@ variables:
 - name: scriptDirectory
   value: $(Build.SourcesDirectory)/scripts
 - name: identityScriptDirectory
-  value: $(Build.SourcesDirectory)/identity/scripts/azure-devops/
+  value: $(Build.SourcesDirectory)/scripts/identity/scripts/azure-devops
 - name: terraformDirectory  
   value: $(Build.SourcesDirectory)/terraform
 - name: TF_IN_AUTOMATION
