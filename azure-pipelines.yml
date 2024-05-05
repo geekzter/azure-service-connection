@@ -13,9 +13,9 @@ parameters:
   type: string
   default: Manual
   values:
-  - Automatic # BUG: A valid refresh token for identity 00000000-0000-0000-0000-000000000000 was not found.
+  # - Automatic # Not supported
   - Manual
-  - Strategy
+  # - Strategy
 - name: concurrency
   displayName: Concurrency
   type: number
