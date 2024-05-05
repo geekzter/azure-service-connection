@@ -13,7 +13,7 @@ jobs:
     - name: Setup Graphviz
       uses: ts-graphviz/setup-graphviz@v2
 
-    - name: Generate diagram
+    - name: Generate Terraform graph
       run: | 
         terraform init
         terraform graph | dot -Tpng >../visuals/terraform-graph.png
