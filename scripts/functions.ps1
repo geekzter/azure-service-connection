@@ -1,5 +1,5 @@
 function Get-TerraformDirectory {
-    return (Join-Path (Split-Path $PSScriptRoot -Parent) terraform azure-devops create-service-connection)
+    return (Join-Path (Split-Path $PSScriptRoot -Parent) terraform)
 }
 
 function Invoke (
