@@ -208,7 +208,6 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | azdo_creates_identity | Let Azure DevOps create identity for service connection | `bool` | `false` | no |
 | azure_key_vault_id | The resource id of the Azure Key Vault to store the certificate or secret in | `string` | `null` | no |
 | azure_role_assignments | Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription. | `set(object({scope=string, role=string}))` | `null` | no |
-| create_federation | Use workload identity federation instead of a App Registration secret | `bool` | `true` | no |
 | create_managed_identity | Creates a Managed Identity instead of a App Registration | `bool` | `false` | no |
 | credential_type | n/a | `string` | `"FederatedIdentity"` | no |
 | entra_app_notes | Description to put in the Entra ID app registration notes field | `string` | `null` | no |
