@@ -83,6 +83,7 @@ module managed_identity {
 module entra_app {
   source                       = "./modules/app-registration"
   create_federation            = var.credential_type == "FederatedIdentity"
+  create_secret                = var.credential_type == "Secret"
   notes                        = local.notes
   federation_subject           = var.credential_type == "FederatedIdentity" ? module.service_connection.service_connection_oidc_subject : null
   issuer                       = var.credential_type == "FederatedIdentity" ? module.service_connection.service_connection_oidc_issuer : null

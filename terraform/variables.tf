@@ -29,12 +29,6 @@ variable azure_role_assignments {
   type                         = set(object({scope=string, role=string}))
 }
 
-# variable create_federation {
-#   description                  = "Use workload identity federation instead of a App Registration secret"
-#   default                      = true
-#   type                         = bool
-# }
-
 variable create_managed_identity {
   description                  = "Creates a Managed Identity instead of a App Registration"
   default                      = false
@@ -46,10 +40,11 @@ variable credential_type {
   default                      = "FederatedIdentity"
   nullable                     = false
   validation {
-    # condition                  = var.credential_type == "Certificate" || var.credential_type == "FederatedIdentity" || var.credential_type == "Secret"
-    # error_message              = "The credential_type must be 'Certificate', 'FederatedIdentity' or 'Secret'"
     condition                  = var.credential_type == "FederatedIdentity" || var.credential_type == "Secret"
     error_message              = "The credential_type must be 'FederatedIdentity' or 'Secret'"
+    # TODO: Depends on https://github.com/microsoft/terraform-provider-azuredevops/issues/409
+    # condition                  = var.credential_type == "Certificate" || var.credential_type == "FederatedIdentity" || var.credential_type == "Secret"
+    # error_message              = "The credential_type must be 'Certificate', 'FederatedIdentity' or 'Secret'"
   }
 }
 
