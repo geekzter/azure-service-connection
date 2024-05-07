@@ -15,11 +15,15 @@ resource random_string suffix {
 
 locals {
   application_id               = var.azdo_creates_identity ? null : (var.create_managed_identity ? module.managed_identity.0.application_id : module.entra_app.0.application_id)
-  authentication_scheme        = var.create_federation ? "WorkloadIdentityFederation" : "ServicePrincipal"
+  authentication_scheme_map     = {
+    # Certificate                 = "ServicePrincipal", # TODO: Depends on https://github.com/microsoft/terraform-provider-azuredevops/issues/409
+    FederatedIdentity           = "WorkloadIdentityFederation",
+    Secret                      = "ServicePrincipal",
+  }
+  authentication_scheme        = local.authentication_scheme_map[var.credential_type]
   azdo_organization_name       = split("/",var.azdo_organization_url)[3]
   azdo_organization_url        = replace(var.azdo_organization_url,"/\\/$/","")
   azdo_project_url             = "${local.azdo_organization_url}/${urlencode(var.azdo_project_name)}"
-  # azdo_service_connection_name = "${replace(data.azurerm_subscription.target.display_name,"/ +/","-")}-${var.azdo_creates_identity ? "aut" : "man"}-${var.create_managed_identity ? "msi" : "sp"}-${var.create_federation ? "oidc" : "secret"}${terraform.workspace == "default" ? "" : format("-%s",terraform.workspace)}-${local.resource_suffix}"
   azdo_service_connection_name = "${replace(data.azurerm_subscription.target.display_name,"/ +/","-")}${terraform.workspace == "default" ? "" : format("-%s",terraform.workspace)}-${local.resource_suffix}"
   azure_role_assignments       = var.azure_role_assignments != null ? var.azure_role_assignments : [
     {
@@ -78,10 +82,10 @@ module managed_identity {
 
 module entra_app {
   source                       = "./modules/app-registration"
-  create_federation            = var.create_federation
+  create_federation            = var.credential_type == "FederatedIdentity"
   notes                        = local.notes
-  federation_subject           = var.create_federation ? module.service_connection.service_connection_oidc_subject : null
-  issuer                       = var.create_federation ? module.service_connection.service_connection_oidc_issuer : null
+  federation_subject           = var.credential_type == "FederatedIdentity" ? module.service_connection.service_connection_oidc_subject : null
+  issuer                       = var.credential_type == "FederatedIdentity" ? module.service_connection.service_connection_oidc_issuer : null
   multi_tenant                 = false
   name                         = "${var.resource_prefix}-azure-service-connection-${terraform.workspace}-${local.resource_suffix}"
   owner_object_ids             = var.entra_app_owner_object_ids
@@ -94,7 +98,7 @@ module entra_app {
 module service_connection {
   source                       = "./modules/service-connection"
   application_id               = local.application_id
-  application_secret           = var.azdo_creates_identity || var.create_federation ? null : module.entra_app.0.secret
+  application_secret           = var.azdo_creates_identity || var.credential_type == "FederatedIdentity" ? null : module.entra_app.0.secret
   authentication_scheme        = local.authentication_scheme
   create_identity              = var.azdo_creates_identity
   project_name                 = var.azdo_project_name
