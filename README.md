@@ -92,7 +92,7 @@ azure_role_assignments         = [
         role                   = "Key Vault Secrets User"
     }
 ]
-create_federation              = true
+credential_type                = "FederatedIdentity"
 create_managed_identity        = true
 managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
 ```
@@ -112,8 +112,8 @@ This creates a Managed Identity with Federated Identity Credential and custom Az
 azdo_organization_url          = "https://dev.azure.com/my-organization"
 azdo_project_name              = "my-project"
 azure_role_assignments         = [] # No direct assignments
-create_federation              = true
 create_managed_identity        = true
+credential_type                = "FederatedIdentity"
 entra_security_group_names     = ["my-security-group"]
 managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
 ```
@@ -132,8 +132,8 @@ This creates an Entra ID app registration with IT service reference and notes fi
 ```hcl
 azdo_organization_url          = "https://dev.azure.com/my-organization"
 azdo_project_name              = "my-project"
-create_federation              = true
 create_managed_identity        = false
+credential_type                = "FederatedIdentity"
 entra_app_notes                = "Service connection for business application ABC deployment to XYZ environment"
 entra_app_owner_object_ids     = ["00000000-0000-0000-0000-000000000000","11111111-1111-1111-1111-111111111111"]
 entra_service_management_reference = "11111111-1111-1111-1111-111111111111"
@@ -162,8 +162,8 @@ azure_role_assignments         = [
         role                   = "Reader"
     }
 ]
-create_federation              = false
 create_managed_identity        = false
+credential_type                = "Secret"
 entra_secret_expiration_days   = 0 # secret lasts 1 hour
 ```
 
