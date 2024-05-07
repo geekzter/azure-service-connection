@@ -15,6 +15,13 @@ variable azdo_project_name {
   type                         = string
 }
 
+variable azure_key_vault_id {
+  default                      = null
+  description                  = "The resource id of the Azure Key Vault to store the certificate or secret in"
+  nullable                     = true
+  type                         = string
+}
+
 variable azure_role_assignments {
   default                      = null
   description                  = "Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription."
@@ -32,6 +39,16 @@ variable create_managed_identity {
   description                  = "Creates a Managed Identity instead of a App Registration"
   default                      = false
   type                         = bool
+}
+
+variable credential_type {
+  type                         = string
+  default                      = "FederatedIdentity"
+  nullable                     = false
+  validation {
+    condition                  = var.credential_type == "Certificate" || var.credential_type == "FederatedIdentity" || var.credential_type == "Secret"
+    error_message              = "The credential_type must be 'Certificate', 'FederatedIdentity' or 'Secret'"
+  }
 }
 
 variable entra_app_notes {
