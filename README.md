@@ -92,7 +92,7 @@ azure_role_assignments         = [
         role                   = "Key Vault Secrets User"
     }
 ]
-create_federation              = true
+credential_type                = "FederatedIdentity"
 create_managed_identity        = true
 managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
 ```
@@ -112,8 +112,8 @@ This creates a Managed Identity with Federated Identity Credential and custom Az
 azdo_organization_url          = "https://dev.azure.com/my-organization"
 azdo_project_name              = "my-project"
 azure_role_assignments         = [] # No direct assignments
-create_federation              = true
 create_managed_identity        = true
+credential_type                = "FederatedIdentity"
 entra_security_group_names     = ["my-security-group"]
 managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
 ```
@@ -132,8 +132,8 @@ This creates an Entra ID app registration with IT service reference and notes fi
 ```hcl
 azdo_organization_url          = "https://dev.azure.com/my-organization"
 azdo_project_name              = "my-project"
-create_federation              = true
 create_managed_identity        = false
+credential_type                = "FederatedIdentity"
 entra_app_notes                = "Service connection for business application ABC deployment to XYZ environment"
 entra_app_owner_object_ids     = ["00000000-0000-0000-0000-000000000000","11111111-1111-1111-1111-111111111111"]
 entra_service_management_reference = "11111111-1111-1111-1111-111111111111"
@@ -162,8 +162,8 @@ azure_role_assignments         = [
         role                   = "Reader"
     }
 ]
-create_federation              = false
 create_managed_identity        = false
+credential_type                = "Secret"
 entra_secret_expiration_days   = 0 # secret lasts 1 hour
 ```
 
@@ -206,9 +206,10 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | azdo_organization_url | The Azure DevOps organization URL (e.g. https://dev.azure.com/contoso) | `string` | n/a | yes |
 | azdo_project_name | The Azure DevOps project name to create the service connection in | `string` | n/a | yes |
 | azdo_creates_identity | Let Azure DevOps create identity for service connection | `bool` | `false` | no |
+| azure_key_vault_id | The resource id of the Azure Key Vault to store the certificate or secret in | `string` | `null` | no |
 | azure_role_assignments | Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription. | `set(object({scope=string, role=string}))` | `null` | no |
-| create_federation | Use workload identity federation instead of a App Registration secret | `bool` | `true` | no |
 | create_managed_identity | Creates a Managed Identity instead of a App Registration | `bool` | `false` | no |
+| credential_type | The type of credential to use for the service connection. Valid values are 'FederatedIdentity' and 'Secret'. | `string` | `"FederatedIdentity"` | no |
 | entra_app_notes | Description to put in the Entra ID app registration notes field | `string` | `null` | no |
 | entra_app_owner_object_ids | Object ids of the users that will be co-owners of the Entra ID app registration | `list(string)` | `null` | no |
 | entra_secret_expiration_days | Secret expiration in days | `number` | `90` | no |

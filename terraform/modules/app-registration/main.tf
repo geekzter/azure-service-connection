@@ -34,7 +34,7 @@ resource azuread_application_federated_identity_credential fic {
 resource time_rotating secret_expiration {
   rotation_days                = max(var.secret_expiration_days,1)
 
-  count                        = var.create_federation ? 0 : 1
+  count                        = var.create_secret ? 1 : 0
 }
 resource azuread_application_password secret {
   end_date_relative            = local.expiration_expression
@@ -44,5 +44,5 @@ resource azuread_application_password secret {
 
   application_id               = azuread_application.app_registration.id
 
-  count                        = var.create_federation ? 0 : 1
+  count                        = var.create_secret ? 1 : 0
 }

@@ -24,10 +24,10 @@ output principal_url {
 
 output secret {
   sensitive   = true
-  value       = var.create_federation ? null : azuread_application_password.secret.0.value
+  value       = var.create_secret ? azuread_application_password.secret.0.value : null
 }
 output secret_end_date {
-  value       = var.create_federation ? null : azuread_application_password.secret.0.end_date
+  value       = var.create_secret ? azuread_application_password.secret.0.end_date : null
 }
 
 output tenant_id {
