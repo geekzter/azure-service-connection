@@ -38,6 +38,7 @@ variable create_managed_identity {
 variable credential_type {
   type                         = string
   default                      = "FederatedIdentity"
+  description                  = "The type of credential to use for the service connection. Valid values are 'FederatedIdentity' and 'Secret'."
   nullable                     = false
   validation {
     condition                  = var.credential_type == "FederatedIdentity" || var.credential_type == "Secret"
