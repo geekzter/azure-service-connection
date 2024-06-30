@@ -184,10 +184,10 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 
 | Name | Version |
 |------|---------|
-| azuread | 2.48.0 |
-| azurerm | 3.102.0 |
+| azuread | 2.53.1 |
+| azurerm | 3.110.0 |
 | external | 2.3.3 |
-| random | 3.6.1 |
+| random | 3.6.2 |
 | terraform | n/a |
 
 ### Modules
@@ -195,9 +195,9 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | Name | Source | Version |
 |------|--------|---------|
 | azure_role_assignments | ./modules/azure-access | n/a |
-| entra_app | ./modules/app-registration | n/a |
-| managed_identity | ./modules/managed-identity | n/a |
-| service_connection | ./modules/service-connection | n/a |
+| entra_app | ./modules/entra-application | n/a |
+| managed_identity | ./modules/azure-managed-identity | n/a |
+| service_connection | ./modules/azure-devops-service-connection | n/a |
 
 ### Inputs
 
