@@ -69,7 +69,7 @@ module managed_identity {
   providers                    = {
     azurerm                    = azurerm.managed_identity
   }
-  source                       = "./modules/managed-identity"
+  source                       = "./modules/azure-managed-identity"
   federation_subject           = module.service_connection.service_connection_oidc_subject
   issuer                       = module.service_connection.service_connection_oidc_issuer
   name                         = "${var.resource_prefix}-azure-service-connection-${terraform.workspace}-${local.resource_suffix}"
@@ -81,7 +81,7 @@ module managed_identity {
 }
 
 module entra_app {
-  source                       = "./modules/app-registration"
+  source                       = "./modules/entra-application"
   create_federation            = var.credential_type == "FederatedIdentity"
   create_secret                = var.credential_type == "Secret"
   notes                        = local.notes
@@ -97,7 +97,7 @@ module entra_app {
 }
 
 module service_connection {
-  source                       = "./modules/service-connection"
+  source                       = "./modules/azure-devops-service-connection"
   application_id               = local.application_id
   application_secret           = var.azdo_creates_identity || var.credential_type == "FederatedIdentity" ? null : module.entra_app.0.secret
   authentication_scheme        = local.authentication_scheme
