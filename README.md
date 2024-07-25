@@ -195,9 +195,9 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | Name | Source | Version |
 |------|--------|---------|
 | azure_role_assignments | ./modules/azure-access | n/a |
+| azure_service_connection | ./modules/azure-devops-azure-service-connection | n/a |
 | entra_app | ./modules/entra-application | n/a |
 | managed_identity | ./modules/azure-managed-identity | n/a |
-| service_connection | ./modules/azure-devops-service-connection | n/a |
 
 ### Inputs
 
