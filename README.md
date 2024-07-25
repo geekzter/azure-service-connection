@@ -156,6 +156,8 @@ Pre-requisites:
 
 #### Managed Identity with FIC for Azure Container Registry Service Connection
 
+![](visuals/msi-fic-acr.png)
+
 This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
 
 ```hcl
