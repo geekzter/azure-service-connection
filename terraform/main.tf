@@ -36,7 +36,7 @@ locals {
   notes                        = coalesce(var.entra_app_notes,"Azure DevOps Service Connection ${local.azdo_service_connection_name}${var.entra_secret_expiration_days == 0 ? " (with short-lived secret)" : " "} in project ${local.azdo_project_url}. Managed by Terraform: https://github.com/geekzter/azure-service-connection.")
   principal_id                 = var.azdo_creates_identity ? null : (var.create_managed_identity ? module.managed_identity.0.principal_id : module.entra_app.0.principal_id)
   principal_name               = var.azdo_creates_identity ? null : (var.create_managed_identity ? module.managed_identity.0.principal_name : module.entra_app.0.principal_name)
-  project_id                   = coalesce(module.acr_service_connection.0.project_id, module.azure_service_connection.0.project_id)
+  project_id                   = var.azdo_service_connection_type == "ACR" ? module.acr_service_connection.0.project_id : module.azure_service_connection.0.project_id
   resource_suffix              = var.resource_suffix != null && var.resource_suffix != "" ? lower(var.resource_suffix) : random_string.suffix.result
   resource_tags                = {
     application                = "Azure Service Connection"
@@ -48,10 +48,10 @@ locals {
     runId                      = var.run_id
     workspace                  = terraform.workspace
   }
-  service_connection_id        = coalesce(module.acr_service_connection.0.service_connection_id, module.azure_service_connection.0.service_connection_id)
-  service_connection_oidc_issuer = coalesce(module.acr_service_connection.0.service_connection_oidc_issuer, module.azure_service_connection.0.service_connection_oidc_issuer)
-  service_connection_oidc_subject = coalesce(module.acr_service_connection.0.service_connection_oidc_subject, module.azure_service_connection.0.service_connection_oidc_subject)
-  service_connection_url       = coalesce(module.acr_service_connection.0.service_connection_url, module.azure_service_connection.0.service_connection_url)
+  service_connection_id        = var.azdo_service_connection_type == "ACR" ? module.acr_service_connection.0.service_connection_id : module.azure_service_connection.0.service_connection_id
+  service_connection_oidc_issuer = var.azdo_service_connection_type == "ACR" ? module.acr_service_connection.0.service_connection_oidc_issuer : module.azure_service_connection.0.service_connection_oidc_issuer
+  service_connection_oidc_subject = var.azdo_service_connection_type == "ACR" ? module.acr_service_connection.0.service_connection_oidc_subject : module.azure_service_connection.0.service_connection_oidc_subject
+  service_connection_url       = var.azdo_service_connection_type == "ACR" ? module.acr_service_connection.0.service_connection_url : module.azure_service_connection.0.service_connection_url
 }
 
 resource terraform_data managed_identity_validator {
@@ -103,7 +103,7 @@ module entra_app {
 
 module acr_service_connection {
   source                       = "./modules/azure-devops-acr-service-connection"
-  acr_name                     = var.azdo_container_registry_name
+  acr_name                     = var.azure_container_registry_name
   application_id               = local.application_id
   application_secret           = var.azdo_creates_identity || var.credential_type == "FederatedIdentity" ? null : module.entra_app.0.secret
   authentication_scheme        = local.authentication_scheme

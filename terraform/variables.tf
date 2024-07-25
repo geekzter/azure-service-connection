@@ -15,16 +15,6 @@ variable azdo_project_name {
   type                         = string
 }
 
-variable azdo_container_registry_name {
-  description                  = "The Azure Container Registry name"
-  nullable                     = true
-  type                         = string
-  validation {
-    condition                  = var.azdo_service_connection_type == "ACR" ? length(var.azdo_container_registry_name) > 0 : true
-    error_message              = "You must specify a value for azdo_container_registry_name if azdo_service_connection_type is 'ACR'."
-  }
-}
-
 variable azdo_service_connection_type {
   type                         = string
   default                      = "Azure"
@@ -33,6 +23,16 @@ variable azdo_service_connection_type {
   validation {
     condition                  = var.azdo_service_connection_type == "Azure" || var.azdo_service_connection_type == "ACR"
     error_message              = "The credential_type must be 'Azure' or 'ACR'"
+  }
+}
+
+variable azure_container_registry_name {
+  description                  = "The Azure Container Registry name"
+  nullable                     = true
+  type                         = string
+  validation {
+    condition                  = var.azure_container_registry_name == "ACR" ? length(var.azure_container_registry_name) > 0 : true
+    error_message              = "You must specify a value for azure_container_registry_name if azdo_service_connection_type is 'ACR'."
   }
 }
 
