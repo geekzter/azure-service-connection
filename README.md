@@ -185,7 +185,7 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | Name | Version |
 |------|---------|
 | azuread | 2.53.1 |
-| azurerm | 3.110.0 |
+| azurerm | 3.113.0 |
 | external | 2.3.3 |
 | random | 3.6.2 |
 | terraform | n/a |
