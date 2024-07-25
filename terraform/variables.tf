@@ -28,6 +28,7 @@ variable azdo_service_connection_type {
 
 variable azure_container_registry_name {
   description                  = "The Azure Container Registry name"
+  default                      = null
   nullable                     = true
   type                         = string
   validation {
