@@ -103,7 +103,7 @@ jobs:
             TF_VAR_azure_container_registry_name: 'foo'
             TF_VAR_credential_type: 'FederatedIdentity'
             TF_VAR_create_managed_identity: 'true'
-            TF_VAR_resource_suffix: '$(Build.BuildId)mmf'
+            TF_VAR_resource_suffix: '$(Build.BuildId)mmfd'
         ${{ if and(or(eq(parameters.identityType, 'Service Principal with federation'),eq(parameters.identityType, 'Strategy')),or(eq(parameters.serviceConnectionCreationMode, 'Automatic'),eq(parameters.serviceConnectionCreationMode, 'Strategy')))  }}:
           AutomaticAppRegFederation:
             TF_VAR_azdo_creates_identity: 'true'
@@ -122,7 +122,7 @@ jobs:
             TF_VAR_azure_container_registry_name: 'foo'
             TF_VAR_credential_type: 'FederatedIdentity'
             TF_VAR_create_managed_identity: 'false'
-            TF_VAR_resource_suffix: '$(Build.BuildId)maf'
+            TF_VAR_resource_suffix: '$(Build.BuildId)mafd'
         ${{ if and(or(eq(parameters.identityType, 'Service Principal with secret'),eq(parameters.identityType, 'Strategy')),or(eq(parameters.serviceConnectionCreationMode, 'Automatic'),eq(parameters.serviceConnectionCreationMode, 'Strategy')))  }}:
           AutomaticAppRegSecret:
             TF_VAR_azdo_creates_identity: 'true'
@@ -259,7 +259,7 @@ jobs:
                           -o json `
                           | ConvertFrom-Json `
                           | Set-Variable run
-          $run | ConvertTo-Json | Out-String | Write-Debug
+          $run | ConvertTo-Json -Depth 3 | Out-String | Write-Debug
           $run | Format-List | Out-String | Write-Debug
           "{0}{1}/_build/results?buildId={2}&view=results" -f "$(System.CollectionUri)", [uri]::EscapeDataString("$(System.TeamProject)"), $run.id | Write-Host
           Write-Host "Waiting for pipeline run $($run.id) to complete..."
