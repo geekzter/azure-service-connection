@@ -91,18 +91,19 @@ jobs:
   ${{ if or(eq(parameters.identityType, 'Strategy'),eq(parameters.serviceConnectionCreationMode, 'Strategy'),not(eq(variables['Build.Reason'], 'Manual'))) }}:
     strategy:
       matrix:
-        ${{ if and(or(eq(parameters.identityType, 'Managed Identity with federation'),eq(parameters.identityType, 'Strategy')),or(eq(parameters.serviceConnectionCreationMode, 'Automatic'),eq(parameters.serviceConnectionCreationMode, 'Strategy')))  }}:
-          AutomaticMSIFederation:
-            TF_VAR_azdo_creates_identity: 'true'
-            TF_VAR_credential_type: 'FederatedIdentity'
-            TF_VAR_create_managed_identity: 'true'
-            TF_VAR_resource_suffix: '$(Build.BuildId)amf'
         ${{ if or(and(or(eq(parameters.identityType, 'Managed Identity with federation'),eq(parameters.identityType, 'Strategy')),or(eq(parameters.serviceConnectionCreationMode, 'Manual'),eq(parameters.serviceConnectionCreationMode, 'Strategy'))),ne(variables['Build.Reason'], 'Manual'))  }}:
           ManualMSIFederation:
             TF_VAR_azdo_creates_identity: 'false'
             TF_VAR_credential_type: 'FederatedIdentity'
             TF_VAR_create_managed_identity: 'true'
             TF_VAR_resource_suffix: '$(Build.BuildId)mmf'
+          ManualMSIFederationACR:
+            TF_VAR_azdo_creates_identity: 'false'
+            TF_VAR_azdo_service_connection_type: 'ACR'
+            TF_VAR_azure_container_registry_name: 'foo'
+            TF_VAR_credential_type: 'FederatedIdentity'
+            TF_VAR_create_managed_identity: 'true'
+            TF_VAR_resource_suffix: '$(Build.BuildId)mmfd'
         ${{ if and(or(eq(parameters.identityType, 'Service Principal with federation'),eq(parameters.identityType, 'Strategy')),or(eq(parameters.serviceConnectionCreationMode, 'Automatic'),eq(parameters.serviceConnectionCreationMode, 'Strategy')))  }}:
           AutomaticAppRegFederation:
             TF_VAR_azdo_creates_identity: 'true'
@@ -115,6 +116,13 @@ jobs:
             TF_VAR_credential_type: 'FederatedIdentity'
             TF_VAR_create_managed_identity: 'false'
             TF_VAR_resource_suffix: '$(Build.BuildId)maf'
+          ManualAppRegFederationACR:
+            TF_VAR_azdo_creates_identity: 'false'
+            TF_VAR_azdo_service_connection_type: 'ACR'
+            TF_VAR_azure_container_registry_name: 'foo'
+            TF_VAR_credential_type: 'FederatedIdentity'
+            TF_VAR_create_managed_identity: 'false'
+            TF_VAR_resource_suffix: '$(Build.BuildId)mafd'
         ${{ if and(or(eq(parameters.identityType, 'Service Principal with secret'),eq(parameters.identityType, 'Strategy')),or(eq(parameters.serviceConnectionCreationMode, 'Automatic'),eq(parameters.serviceConnectionCreationMode, 'Strategy')))  }}:
           AutomaticAppRegSecret:
             TF_VAR_azdo_creates_identity: 'true'
@@ -222,7 +230,7 @@ jobs:
 
   - ${{ if parameters.testServiceConnection }}:
     - task: AzureCLI@2
-      condition: and(succeeded(),ne(coalesce(variables.serviceConnectionTestPipelineId,'empty'),'empty'))
+      condition: and(succeeded(),ne(coalesce(variables.serviceConnectionTestPipelineId,'empty'),'empty'),ne(variables['TF_VAR_azdo_service_connection_type'], 'ACR'))
       displayName: 'Test Service Connection'
       timeoutInMinutes: 5
       inputs:
@@ -251,7 +259,7 @@ jobs:
                           -o json `
                           | ConvertFrom-Json `
                           | Set-Variable run
-          $run | ConvertTo-Json | Out-String | Write-Debug
+          $run | ConvertTo-Json -Depth 5 | Out-String | Write-Debug
           $run | Format-List | Out-String | Write-Debug
           "{0}{1}/_build/results?buildId={2}&view=results" -f "$(System.CollectionUri)", [uri]::EscapeDataString("$(System.TeamProject)"), $run.id | Write-Host
           Write-Host "Waiting for pipeline run $($run.id) to complete..."

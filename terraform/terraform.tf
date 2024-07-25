@@ -3,7 +3,7 @@ terraform {
     azuread                    = "~> 2.40"
     azuredevops = {
       source                   = "microsoft/azuredevops"
-      version                  = "~> 1.0"
+      version                  = "~> 1.2"
     }
     azurerm                    = "~> 3.66"
     external                   = "~> 2.3"
@@ -11,7 +11,7 @@ terraform {
     random                     = "~> 3.5"
     time                       = "~> 0.9"
   }
-  required_version             = "~> 1.3"
+  required_version             = "~> 1.9"
 }
 
 data external azdo_token {

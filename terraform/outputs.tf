@@ -1,10 +1,10 @@
 output azdo_project_id {
   description = "The Azure DevOps project id the service connection was created in"
-  value       = module.service_connection.project_id
+  value       = local.project_id
 }
 output azdo_service_connection_id {
   description = "The Azure DevOps service connection id"
-  value       = module.service_connection.service_connection_id
+  value       = local.service_connection_id
 }
 output azdo_service_connection_name {
   description = "The Azure DevOps service connection name"
@@ -12,7 +12,7 @@ output azdo_service_connection_name {
 }
 output azdo_service_connection_url {
   description = "The Azure DevOps service connection portal URL"
-  value       = module.service_connection.service_connection_url
+  value       = local.service_connection_url
 }
 output azure_role_assignments {
   description = "Role assignments created for the service connection's identity"
@@ -42,11 +42,11 @@ output identity_application_name {
 }
 output identity_federation_subject {
   description = "The federation subject"
-  value       = module.service_connection.service_connection_oidc_subject
+  value       = local.service_connection_oidc_subject
 }
 output identity_issuer {
   description = "The federation issuer"
-  value       = module.service_connection.service_connection_oidc_issuer
+  value       = local.service_connection_oidc_issuer
 }
 output identity_object_id {
   description = "The object id of the service connection's identity"

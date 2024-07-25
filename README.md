@@ -69,60 +69,6 @@ Pre-requisites:
   - The user is member of a privileged Entra ID role e.g. [Application Developer](https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference#application-developer)
 - The user is an owner of the Azure subscription (so role assignment can be performed)
 
-#### Managed Identity with FIC and custom RBAC
-
-![](visuals/msi-fic-multi-rbac.png)
-
-This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
-
-```hcl
-azdo_organization_url          = "https://dev.azure.com/my-organization"
-azdo_project_name              = "my-project"
-azure_role_assignments         = [
-    {
-        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000"
-        role                   = "Contributor"
-    },
-    {
-        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
-        role                   = "Storage Blob Data Contributor"
-    },
-    {
-        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
-        role                   = "Key Vault Secrets User"
-    }
-]
-credential_type                = "FederatedIdentity"
-create_managed_identity        = true
-managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
-```
-
-Pre-requisites:
-
-- A resource group to hold the Managed Identity has been pre-created
-- The user is an owner of the Azure scopes to create role assignments on
-
-#### Managed Identity assigned to Entra ID security group
-
-![](visuals/msi-fic-group.png)
-
-This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
-
-```hcl
-azdo_organization_url          = "https://dev.azure.com/my-organization"
-azdo_project_name              = "my-project"
-azure_role_assignments         = [] # No direct assignments
-create_managed_identity        = true
-credential_type                = "FederatedIdentity"
-entra_security_group_names     = ["my-security-group"]
-managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
-```
-
-Pre-requisites:
-
-- A resource group to hold the Managed Identity has been pre-created
-- The user is an owner of the Entra ID security group to add the Managed Identity to
-
 #### App registration with FIC and ITSM metadata
 
 ![](visuals/app-fic.png)
@@ -175,6 +121,87 @@ Pre-requisites:
   - The user is member of a privileged Entra ID role e.g. [Application Developer](https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference#application-developer)
 - The user is an owner of the Azure resource group (so role assignment can be performed)
 
+#### Managed Identity with FIC and custom RBAC
+
+![](visuals/msi-fic-multi-rbac.png)
+
+This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
+
+```hcl
+azdo_organization_url          = "https://dev.azure.com/my-organization"
+azdo_project_name              = "my-project"
+azure_role_assignments         = [
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000"
+        role                   = "Contributor"
+    },
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
+        role                   = "Storage Blob Data Contributor"
+    },
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
+        role                   = "Key Vault Secrets User"
+    }
+]
+credential_type                = "FederatedIdentity"
+create_managed_identity        = true
+managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
+```
+
+Pre-requisites:
+
+- A resource group to hold the Managed Identity has been pre-created
+- The user is an owner of the Azure scopes to create role assignments on
+
+#### Managed Identity with FIC for Azure Container Registry Service Connection
+
+![](visuals/msi-fic-acr.png)
+
+This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
+
+```hcl
+azdo_organization_url          = "https://dev.azure.com/my-organization"
+azdo_project_name              = "my-project"
+azdo_service_connection_type   = "ACR"
+azure_container_registry_name  = "myregistry"
+azure_role_assignments         = [
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ContainerRegistry/registries/myregistry"
+        role                   = "AcrPush"
+    }
+]
+credential_type                = "FederatedIdentity"
+create_managed_identity        = true
+managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
+```
+
+Pre-requisites:
+
+- A resource group to hold the Managed Identity has been pre-created
+- The user is an owner of the Azure scopes to create role assignments on
+
+#### Managed Identity assigned to Entra ID security group
+
+![](visuals/msi-fic-group.png)
+
+This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
+
+```hcl
+azdo_organization_url          = "https://dev.azure.com/my-organization"
+azdo_project_name              = "my-project"
+azure_role_assignments         = [] # No direct assignments
+create_managed_identity        = true
+credential_type                = "FederatedIdentity"
+entra_security_group_names     = ["my-security-group"]
+managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
+```
+
+Pre-requisites:
+
+- A resource group to hold the Managed Identity has been pre-created
+- The user is an owner of the Entra ID security group to add the Managed Identity to
+
 ## Terraform Configuration
 
 The (required) variables and output are listed below. Sensitive outputs are masked by default.
@@ -194,10 +221,11 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 
 | Name | Source | Version |
 |------|--------|---------|
+| acr_service_connection | ./modules/azure-devops-acr-service-connection | n/a |
 | azure_role_assignments | ./modules/azure-access | n/a |
+| azure_service_connection | ./modules/azure-devops-azure-service-connection | n/a |
 | entra_app | ./modules/entra-application | n/a |
 | managed_identity | ./modules/azure-managed-identity | n/a |
-| service_connection | ./modules/azure-devops-service-connection | n/a |
 
 ### Inputs
 
@@ -206,7 +234,8 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | azdo_organization_url | The Azure DevOps organization URL (e.g. https://dev.azure.com/contoso) | `string` | n/a | yes |
 | azdo_project_name | The Azure DevOps project name to create the service connection in | `string` | n/a | yes |
 | azdo_creates_identity | Let Azure DevOps create identity for service connection | `bool` | `false` | no |
-| azure_key_vault_id | The resource id of the Azure Key Vault to store the certificate or secret in | `string` | `null` | no |
+| azdo_service_connection_type | The type of service connection to create. Valid values are 'Azure' and 'ACR'. | `string` | `"Azure"` | no |
+| azure_container_registry_name | The Azure Container Registry name | `string` | `null` | no |
 | azure_role_assignments | Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription. | `set(object({scope=string, role=string}))` | `null` | no |
 | create_managed_identity | Creates a Managed Identity instead of a App Registration | `bool` | `false` | no |
 | credential_type | The type of credential to use for the service connection. Valid values are 'FederatedIdentity' and 'Secret'. | `string` | `"FederatedIdentity"` | no |
