@@ -15,11 +15,25 @@ variable azdo_project_name {
   type                         = string
 }
 
-variable azure_key_vault_id {
-  default                      = null
-  description                  = "The resource id of the Azure Key Vault to store the certificate or secret in"
+variable azdo_container_registry_name {
+  description                  = "The Azure Container Registry name"
   nullable                     = true
   type                         = string
+  validation {
+    condition                  = var.azdo_service_connection_type == "ACR" ? length(var.azdo_container_registry_name) > 0 : true
+    error_message              = "You must specify a value for azdo_container_registry_name if azdo_service_connection_type is 'ACR'."
+  }
+}
+
+variable azdo_service_connection_type {
+  type                         = string
+  default                      = "Azure"
+  description                  = "The type of service connection to create. Valid values are 'Azure' and 'ACR'."
+  nullable                     = false
+  validation {
+    condition                  = var.azdo_service_connection_type == "Azure" || var.azdo_service_connection_type == "ACR"
+    error_message              = "The credential_type must be 'Azure' or 'ACR'"
+  }
 }
 
 variable azure_role_assignments {
@@ -46,6 +60,10 @@ variable credential_type {
     # TODO: Depends on https://github.com/microsoft/terraform-provider-azuredevops/issues/409
     # condition                  = var.credential_type == "Certificate" || var.credential_type == "FederatedIdentity" || var.credential_type == "Secret"
     # error_message              = "The credential_type must be 'Certificate', 'FederatedIdentity' or 'Secret'"
+  }
+  validation {
+    condition                  = !(var.credential_type == "Secret" && var.azdo_service_connection_type == "ACR" && var.azdo_creates_identity)
+    error_message              = "The combination azdo_service_connection_type 'ACR, credential_type 'Secret' and azdo_creates_identity 'true' is not supported."
   }
 }
 

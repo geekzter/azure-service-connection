@@ -11,7 +11,7 @@ terraform {
     random                     = "~> 3.5"
     time                       = "~> 0.9"
   }
-  required_version             = "~> 1.3"
+  required_version             = "~> 1.9"
 }
 
 data external azdo_token {
