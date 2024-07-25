@@ -70,8 +70,8 @@ module managed_identity {
     azurerm                    = azurerm.managed_identity
   }
   source                       = "./modules/azure-managed-identity"
-  federation_subject           = module.service_connection.service_connection_oidc_subject
-  issuer                       = module.service_connection.service_connection_oidc_issuer
+  federation_subject           = module.azure_service_connection.service_connection_oidc_subject
+  issuer                       = module.azure_service_connection.service_connection_oidc_issuer
   name                         = "${var.resource_prefix}-azure-service-connection-${terraform.workspace}-${local.resource_suffix}"
   resource_group_name          = split("/", var.managed_identity_resource_group_id)[4]
   tags                         = local.resource_tags
@@ -85,8 +85,8 @@ module entra_app {
   create_federation            = var.credential_type == "FederatedIdentity"
   create_secret                = var.credential_type == "Secret"
   notes                        = local.notes
-  federation_subject           = var.credential_type == "FederatedIdentity" ? module.service_connection.service_connection_oidc_subject : null
-  issuer                       = var.credential_type == "FederatedIdentity" ? module.service_connection.service_connection_oidc_issuer : null
+  federation_subject           = var.credential_type == "FederatedIdentity" ? module.azure_service_connection.service_connection_oidc_subject : null
+  issuer                       = var.credential_type == "FederatedIdentity" ? module.azure_service_connection.service_connection_oidc_issuer : null
   multi_tenant                 = false
   name                         = "${var.resource_prefix}-azure-service-connection-${terraform.workspace}-${local.resource_suffix}"
   owner_object_ids             = var.entra_app_owner_object_ids
@@ -96,8 +96,8 @@ module entra_app {
   count                        = var.create_managed_identity || var.azdo_creates_identity ? 0 : 1
 }
 
-module service_connection {
-  source                       = "./modules/azure-devops-service-connection"
+module azure_service_connection {
+  source                       = "./modules/azure-devops-azure-service-connection"
   application_id               = local.application_id
   application_secret           = var.azdo_creates_identity || var.credential_type == "FederatedIdentity" ? null : module.entra_app.0.secret
   authentication_scheme        = local.authentication_scheme
