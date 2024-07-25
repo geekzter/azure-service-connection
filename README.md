@@ -69,60 +69,6 @@ Pre-requisites:
   - The user is member of a privileged Entra ID role e.g. [Application Developer](https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference#application-developer)
 - The user is an owner of the Azure subscription (so role assignment can be performed)
 
-#### Managed Identity with FIC and custom RBAC
-
-![](visuals/msi-fic-multi-rbac.png)
-
-This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
-
-```hcl
-azdo_organization_url          = "https://dev.azure.com/my-organization"
-azdo_project_name              = "my-project"
-azure_role_assignments         = [
-    {
-        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000"
-        role                   = "Contributor"
-    },
-    {
-        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
-        role                   = "Storage Blob Data Contributor"
-    },
-    {
-        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
-        role                   = "Key Vault Secrets User"
-    }
-]
-credential_type                = "FederatedIdentity"
-create_managed_identity        = true
-managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
-```
-
-Pre-requisites:
-
-- A resource group to hold the Managed Identity has been pre-created
-- The user is an owner of the Azure scopes to create role assignments on
-
-#### Managed Identity assigned to Entra ID security group
-
-![](visuals/msi-fic-group.png)
-
-This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
-
-```hcl
-azdo_organization_url          = "https://dev.azure.com/my-organization"
-azdo_project_name              = "my-project"
-azure_role_assignments         = [] # No direct assignments
-create_managed_identity        = true
-credential_type                = "FederatedIdentity"
-entra_security_group_names     = ["my-security-group"]
-managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
-```
-
-Pre-requisites:
-
-- A resource group to hold the Managed Identity has been pre-created
-- The user is an owner of the Entra ID security group to add the Managed Identity to
-
 #### App registration with FIC and ITSM metadata
 
 ![](visuals/app-fic.png)
@@ -174,6 +120,85 @@ Pre-requisites:
   or
   - The user is member of a privileged Entra ID role e.g. [Application Developer](https://learn.microsoft.com/entra/identity/role-based-access-control/permissions-reference#application-developer)
 - The user is an owner of the Azure resource group (so role assignment can be performed)
+
+#### Managed Identity with FIC and custom RBAC
+
+![](visuals/msi-fic-multi-rbac.png)
+
+This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
+
+```hcl
+azdo_organization_url          = "https://dev.azure.com/my-organization"
+azdo_project_name              = "my-project"
+azure_role_assignments         = [
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000"
+        role                   = "Contributor"
+    },
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
+        role                   = "Storage Blob Data Contributor"
+    },
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg"
+        role                   = "Key Vault Secrets User"
+    }
+]
+credential_type                = "FederatedIdentity"
+create_managed_identity        = true
+managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
+```
+
+Pre-requisites:
+
+- A resource group to hold the Managed Identity has been pre-created
+- The user is an owner of the Azure scopes to create role assignments on
+
+#### Managed Identity with FIC for Azure Container Registry Service Connection
+
+This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
+
+```hcl
+azdo_organization_url          = "https://dev.azure.com/my-organization"
+azdo_project_name              = "my-project"
+azdo_service_connection_type   = "ACR"
+azure_container_registry_name  = "myregistry"
+azure_role_assignments         = [
+    {
+        scope                  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ContainerRegistry/registries/myregistry" 
+        role                   = "AcrPush"
+    }
+]
+credential_type                = "FederatedIdentity"
+create_managed_identity        = true
+managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
+```
+
+Pre-requisites:
+
+- A resource group to hold the Managed Identity has been pre-created
+- The user is an owner of the Azure scopes to create role assignments on
+
+#### Managed Identity assigned to Entra ID security group
+
+![](visuals/msi-fic-group.png)
+
+This creates a Managed Identity with Federated Identity Credential and custom Azure RBAC (role-based access control) role assignments:
+
+```hcl
+azdo_organization_url          = "https://dev.azure.com/my-organization"
+azdo_project_name              = "my-project"
+azure_role_assignments         = [] # No direct assignments
+create_managed_identity        = true
+credential_type                = "FederatedIdentity"
+entra_security_group_names     = ["my-security-group"]
+managed_identity_resource_group_id = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/msi-rg"
+```
+
+Pre-requisites:
+
+- A resource group to hold the Managed Identity has been pre-created
+- The user is an owner of the Entra ID security group to add the Managed Identity to
 
 ## Terraform Configuration
 
