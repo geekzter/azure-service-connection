@@ -194,6 +194,7 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 
 | Name | Source | Version |
 |------|--------|---------|
+| acr_service_connection | ./modules/azure-devops-acr-service-connection | n/a |
 | azure_role_assignments | ./modules/azure-access | n/a |
 | azure_service_connection | ./modules/azure-devops-azure-service-connection | n/a |
 | entra_app | ./modules/entra-application | n/a |
@@ -203,10 +204,11 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| azdo_container_registry_name | The Azure Container Registry name | `string` | n/a | yes |
 | azdo_organization_url | The Azure DevOps organization URL (e.g. https://dev.azure.com/contoso) | `string` | n/a | yes |
 | azdo_project_name | The Azure DevOps project name to create the service connection in | `string` | n/a | yes |
 | azdo_creates_identity | Let Azure DevOps create identity for service connection | `bool` | `false` | no |
-| azure_key_vault_id | The resource id of the Azure Key Vault to store the certificate or secret in | `string` | `null` | no |
+| azdo_service_connection_type | The type of service connection to create. Valid values are 'Azure' and 'ACR'. | `string` | `"Azure"` | no |
 | azure_role_assignments | Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription. | `set(object({scope=string, role=string}))` | `null` | no |
 | create_managed_identity | Creates a Managed Identity instead of a App Registration | `bool` | `false` | no |
 | credential_type | The type of credential to use for the service connection. Valid values are 'FederatedIdentity' and 'Secret'. | `string` | `"FederatedIdentity"` | no |
