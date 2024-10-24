@@ -25,5 +25,5 @@ resource time_sleep fic_destroy_race_condition {
   depends_on                   = [resource.azuredevops_serviceendpoint_azurecr.azurerm]
   # The service connection destroy will fail if the federated credential is still operational 
   # Wait for Entra to finish removal of the federated credential
-  destroy_duration             = "10s"
+  destroy_duration             = "30s"
 }
