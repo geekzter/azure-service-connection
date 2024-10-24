@@ -5,7 +5,7 @@ terraform {
       source                   = "microsoft/azuredevops"
       version                  = "~> 1.2"
     }
-    azurerm                    = "~> 3.66"
+    azurerm                    = "~> 4.6"
     external                   = "~> 2.3"
     http                       = "~> 3.4"
     random                     = "~> 3.5"
