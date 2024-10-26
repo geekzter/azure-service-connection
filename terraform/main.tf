@@ -89,11 +89,12 @@ module entra_app {
   source                       = "./modules/entra-application"
   create_federation            = var.credential_type == "FederatedIdentity"
   create_secret                = var.credential_type == "Secret"
-  notes                        = local.notes
+  display_name                 = terraform.workspace
   federation_subject           = var.credential_type == "FederatedIdentity" ? local.service_connection_oidc_subject : null
   issuer                       = var.credential_type == "FederatedIdentity" ? local.service_connection_oidc_issuer  : null
   multi_tenant                 = false
   name                         = "${var.resource_prefix}-${lower(var.azdo_service_connection_type)}-service-connection-${terraform.workspace}-${local.resource_suffix}"
+  notes                        = local.notes
   owner_object_ids             = var.entra_app_owner_object_ids
   secret_expiration_days       = var.entra_secret_expiration_days
   service_management_reference = var.entra_service_management_reference
