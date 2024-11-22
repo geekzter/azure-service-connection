@@ -4,7 +4,7 @@ variable create_federation {
 variable create_secret {
   type   = bool
 }
-variable display_name {}
+variable federated_identity_credential_name {}
 variable notes {}
 variable issuer {}
 variable federation_subject {}

@@ -23,7 +23,7 @@ resource azuread_service_principal spn {
 resource azuread_application_federated_identity_credential fic {
   application_id               = azuread_application.app_registration.id
   description                  = var.notes
-  display_name                 = var.display_name
+  display_name                 = var.federated_identity_credential_name
   audiences                    = ["api://AzureADTokenExchange"]
   issuer                       = var.issuer
   subject                      = var.federation_subject
