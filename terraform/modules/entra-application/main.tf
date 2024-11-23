@@ -1,8 +1,8 @@
 data azuread_client_config current {}
 
 locals {
-  owner_object_ids              = var.owner_object_ids != null ? var.owner_object_ids : [data.azuread_client_config.current.object_id]
   expiration_expression        = "${(var.secret_expiration_days * 24) + 1}h01m"
+  owner_object_ids             = var.owner_object_ids != null ? var.owner_object_ids : [data.azuread_client_config.current.object_id]
 }
 
 resource azuread_application app_registration {
@@ -23,7 +23,7 @@ resource azuread_service_principal spn {
 resource azuread_application_federated_identity_credential fic {
   application_id               = azuread_application.app_registration.id
   description                  = var.notes
-  display_name                 = replace(var.federation_subject,"/[:/ ]+/","-")
+  display_name                 = var.federated_identity_credential_name
   audiences                    = ["api://AzureADTokenExchange"]
   issuer                       = var.issuer
   subject                      = var.federation_subject

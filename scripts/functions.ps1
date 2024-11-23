@@ -33,9 +33,12 @@ function Login-Az (
             $azLoginSwitches = "--use-device-code"
         }
         if ($TenantId.Value -and ($TenantId.Value -ne [guid]::Empty.ToString())) {
+            Write-Verbose "Logging into tenant $($TenantId.Value)"
             Write-Debug "az login -t $TenantId.Value $($azLoginSwitches)"
-            az login --allow-no-subscriptions -t $TenantId.Value -o none $($azLoginSwitches)
+            az config set core.login_experience_v2=off
+            az login --allow-no-subscriptions -t $($TenantId.Value) -o none $($azLoginSwitches)
         } else {
+            az config set core.login_experience_v2=on
             az login --allow-no-subscriptions $($azLoginSwitches) -o none
             az account show 2>$null | ConvertFrom-Json | Set-Variable azureAccount
             $TenantId.Value = $azureAccount.tenantId
