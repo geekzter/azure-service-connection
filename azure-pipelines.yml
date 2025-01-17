@@ -85,8 +85,8 @@ jobs:
   displayName: 'Provision'
 
   pool:
-    name: 'Azure Pipelines'
-    vmImage: ubuntu-latest
+    name: $[ coalesce(variables.pool,'Azure Pipelines') ]
+    vmImage: $[ coalesce(variables.vmImage,'ubuntu-latest') ]
 
   ${{ if or(eq(parameters.identityType, 'Strategy'),eq(parameters.serviceConnectionCreationMode, 'Strategy'),not(eq(variables['Build.Reason'], 'Manual'))) }}:
     strategy:
@@ -365,8 +365,8 @@ jobs:
     displayName: 'Destroy (${{ parameters.destroy }})'
 
     pool:
-      name: 'Azure Pipelines'
-      vmImage: ubuntu-latest
+      name: $[ coalesce(variables.pool,'Azure Pipelines') ]
+      vmImage: $[ coalesce(variables.vmImage,'ubuntu-latest') ]
 
     steps:
     - task: AzureCLI@2
