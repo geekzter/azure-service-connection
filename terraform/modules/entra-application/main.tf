@@ -12,6 +12,10 @@ resource azuread_application app_registration {
   prevent_duplicate_names      = true
   service_management_reference = var.service_management_reference
   sign_in_audience             = var.multi_tenant ? "AzureADMultipleOrgs" : null
+
+  web {
+    redirect_uris              = var.multi_tenant ? ["https://aad.portal.azure.com/"] : []
+  }
 }
 
 resource azuread_service_principal spn {

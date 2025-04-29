@@ -1,0 +1,105 @@
+# parameters:
+# - name: peerTenantId
+#   displayName: Peer tenant id
+#   type: string
+
+name: $(Date:yyyyMMdd)$(Rev:.r)-$(Build.DefinitionVersion)-$(SourceBranchName)-$(Build.BuildId)-create-${{lower(parameters.serviceConnectionCreationMode)}}-${{lower(replace(parameters.identityType,' ','-'))}}
+
+trigger: none
+
+variables:
+- group: 'identity-ci' # Should contain 'azureConnection', 'serviceConnectionTestPipelineId'
+- name: application
+  value: 'Azure Service Connection'
+- name: AZURE_CORE_ONLY_SHOW_ERRORS
+  value: 'true'
+- name: AZURE_EXTENSION_USE_DYNAMIC_INSTALL
+  value: 'yes_without_prompt'
+- name: repository
+  value: 'azure-identity-scripts'
+- name: scriptDirectory
+  value: $(Build.SourcesDirectory)/scripts
+- name: identityScriptDirectory
+  value: $(Build.SourcesDirectory)/scripts/identity/scripts/azure-devops
+- name: terraformDirectory  
+  value: $(Build.SourcesDirectory)/samples/multitenant
+- name: TF_IN_AUTOMATION
+  value: true
+- name: TF_INPUT
+  value: 0
+- name: TF_WORKSPACE
+  value: ci
+
+jobs:
+- job: 'Provision'
+  displayName: 'Provision'
+
+  pool:
+    name: 'Azure Pipelines'
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - bash: |
+      command -v >&- terraform || {
+        # Install dependencies
+        sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+
+        # Install the HashiCorp GPG key
+        wget -O- https://apt.releases.hashicorp.com/gpg | \
+          gpg --dearmor | \
+          sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+
+        # Verify the key's fingerprint.
+        gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
+
+        # Add the official HashiCorp repository
+        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+          sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+        # Download package information from HashiCorp
+        sudo apt update
+
+        # Install Terraform from the new repository
+        sudo apt-get install terraform
+      }
+    displayName: 'Install Terraform'
+    
+  - pwsh: terraform init
+    displayName: 'Terraform init'
+    workingDirectory: '$(terraformDirectory)'
+
+  - task: AzureCLI@2
+    displayName: 'Terraform apply'
+    name: terraform
+    inputs:
+      azureSubscription: '$(azureConnection)'
+      addSpnToEnvironment: true
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        $env:ARM_CLIENT_ID       ??= $env:servicePrincipalId
+        $env:ARM_CLIENT_SECRET   ??= $env:servicePrincipalKey
+        $env:ARM_OIDC_TOKEN        = $env:idToken
+        $env:ARM_SUBSCRIPTION_ID ??= $account.id  
+        $env:ARM_TENANT_ID       ??= $account.tenantId
+        $env:ARM_USE_CLI         ??= (!($env:idToken -or $env:servicePrincipalKey)).ToString().ToLower()
+        $env:ARM_USE_OIDC        ??= ($env:ARM_OIDC_TOKEN -ne $null).ToString().ToLower()
+
+        # List environment variables
+        Get-ChildItem -Path Env: `
+                      -Recurse `
+                      -Include ARM_*, TF_* `
+                      | ForEach-Object { 
+                            if ($_.Name -match 'SECRET|TOKEN') {
+                                $_.Value = "<redacted>"
+                            } 
+                            $_
+                        } `
+                      | Sort-Object -Property Name `
+                      | Format-Table -AutoSize
+
+        terraform apply -auto-approve
+      failOnStandardError: true
+      workingDirectory: '$(terraformDirectory)'
+    env:
+      TF_VAR_peer_tenant_id: $(TF_VAR_peer_tenant_id) # ensure case sensitivity

@@ -92,7 +92,7 @@ module entra_app {
   federated_identity_credential_name = local.azdo_service_connection_name
   federation_subject           = var.credential_type == "FederatedIdentity" ? local.service_connection_oidc_subject : null
   issuer                       = var.credential_type == "FederatedIdentity" ? local.service_connection_oidc_issuer  : null
-  multi_tenant                 = false
+  multi_tenant                 = var.entra_app_multi_tenant
   name                         = "${var.resource_prefix}-${lower(var.azdo_service_connection_type)}-service-connection-${terraform.workspace}-${local.resource_suffix}"
   notes                        = local.notes
   owner_object_ids             = var.entra_app_owner_object_ids

@@ -68,6 +68,12 @@ variable credential_type {
   }
 }
 
+variable entra_app_multi_tenant {
+  default                      = false
+  description                  = "Create a multi-tenant Entra ID app registration"
+  type                         = bool
+}
+
 variable entra_app_notes {
   default                      = null
   description                  = "Description to put in the Entra ID app registration notes field"
