@@ -8,21 +8,6 @@ name: $(Date:yyyyMMdd)$(Rev:.r)-$(Build.DefinitionVersion)-$(SourceBranchName)-$
 trigger: none
 
 variables:
-- group: 'identity-ci' # Should contain 'azureConnection', 'serviceConnectionTestPipelineId'
-- name: application
-  value: 'Azure Service Connection'
-- name: AZURE_CORE_ONLY_SHOW_ERRORS
-  value: 'true'
-- name: AZURE_EXTENSION_USE_DYNAMIC_INSTALL
-  value: 'yes_without_prompt'
-- name: repository
-  value: 'azure-identity-scripts'
-- name: scriptDirectory
-  value: $(Build.SourcesDirectory)/scripts
-- name: identityScriptDirectory
-  value: $(Build.SourcesDirectory)/scripts/identity/scripts/azure-devops
-- name: terraformDirectory  
-  value: $(Build.SourcesDirectory)/samples/multitenant
 - name: TF_IN_AUTOMATION
   value: true
 - name: TF_INPUT
