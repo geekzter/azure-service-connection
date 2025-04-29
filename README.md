@@ -239,6 +239,7 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | azure_role_assignments | Role assignments to create for the service connection's identity. If this is empty, the Contributor role will be assigned on the azurerm provider subscription. | `set(object({scope=string, role=string}))` | `null` | no |
 | create_managed_identity | Creates a Managed Identity instead of a App Registration | `bool` | `false` | no |
 | credential_type | The type of credential to use for the service connection. Valid values are 'FederatedIdentity' and 'Secret'. | `string` | `"FederatedIdentity"` | no |
+| entra_app_multi_tenant | Create a multi-tenant Entra ID app registration | `bool` | `false` | no |
 | entra_app_notes | Description to put in the Entra ID app registration notes field | `string` | `null` | no |
 | entra_app_owner_object_ids | Object ids of the users that will be co-owners of the Entra ID app registration | `list(string)` | `null` | no |
 | entra_secret_expiration_days | Secret expiration in days | `number` | `90` | no |
