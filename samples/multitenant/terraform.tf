@@ -13,9 +13,7 @@ terraform {
 }
 
 # Microsoft Azure Resource Manager Provider
-provider azuread {
-  tenant_id                    = var.tenant_id
-}
+provider azuread {}
 data azuread_client_config default {}
 
 # Multi-tenant multi-provider
