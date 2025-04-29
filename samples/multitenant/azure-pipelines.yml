@@ -8,6 +8,8 @@ name: $(Date:yyyyMMdd)$(Rev:.r)-$(Build.DefinitionVersion)-$(SourceBranchName)-$
 trigger: none
 
 variables:
+- name: terraformDirectory  
+  value: $(Build.SourcesDirectory)/samples/multitenant
 - name: TF_IN_AUTOMATION
   value: true
 - name: TF_INPUT
