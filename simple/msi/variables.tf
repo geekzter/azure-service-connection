@@ -3,8 +3,8 @@ variable azdo_organization_url {
   type                         = string
 }
 variable azdo_service_connection_name {
-  type                         = string
   nullable                     = false
+  type                         = string
 }
 variable azdo_project_name {
   nullable                     = false
