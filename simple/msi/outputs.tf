@@ -1,7 +1,3 @@
-output azdo_project_id {
-  value       = data.azuredevops_project.project.id
-}
-
 output azdo_service_connection_id {
   value       = azuredevops_serviceendpoint_azurerm.azurerm.id
 }
@@ -9,11 +5,12 @@ output azdo_service_connection_name {
   description = "The Azure DevOps service connection name"
   value       = var.azdo_service_connection_name
 }
+
+output azdo_service_connection_federation_issuer {
+  value       = azuredevops_serviceendpoint_azurerm.azurerm.workload_identity_federation_issuer
+}
 output azdo_service_connection_federation_subject {
   value       = azuredevops_serviceendpoint_azurerm.azurerm.workload_identity_federation_subject
-}
-output azdo_service_connection_issuer {
-  value       = azuredevops_serviceendpoint_azurerm.azurerm.workload_identity_federation_issuer
 }
 
 output managed_identity_application_id {

@@ -2,13 +2,11 @@ terraform {
   required_providers {
     azuredevops = {
       source                   = "microsoft/azuredevops"
-      version                  = "~> 1.2"
+      version                  = "~> 1.10"
     }
-    azurerm                    = "~> 4.6"
+    azurerm                    = "~> 4.35"
     external                   = "~> 2.3"
-    http                       = "~> 3.4"
-    random                     = "~> 3.5"
-    time                       = "~> 0.9"
+    time                       = "~> 0.13"
   }
   required_version             = "~> 1.9"
 }

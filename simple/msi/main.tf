@@ -1,4 +1,3 @@
-# data azurerm_client_config current {}
 data azurerm_subscription target {
   provider                     = azurerm.target
 }
@@ -26,7 +25,7 @@ resource azuredevops_serviceendpoint_azurerm azurerm {
   credentials {
     serviceprincipalid         = azurerm_user_assigned_identity.identity.client_id
   }  
-  azurerm_spn_tenantid         = data.azurerm_subscription.target.tenant_id
+  azurerm_spn_tenantid         = azurerm_user_assigned_identity.identity.tenant_id
   azurerm_subscription_id      = data.azurerm_subscription.target.subscription_id
   azurerm_subscription_name    = data.azurerm_subscription.target.display_name
 }
@@ -49,7 +48,7 @@ resource azurerm_federated_identity_credential fic {
 
 resource azurerm_role_assignment resouce_access {
   provider                     = azurerm.target
-  scope                        = var.azure_target_scope_id
+  scope                        = provider::azurerm::normalise_resource_id(var.azure_target_scope_id)
   role_definition_name         = "Contributor"
   principal_id                 = azurerm_user_assigned_identity.identity.principal_id
 }
