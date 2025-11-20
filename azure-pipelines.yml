@@ -255,12 +255,6 @@ jobs:
       TF_VAR_run_id: $(Build.BuildId)
 
   - ${{ if parameters.testServiceConnection }}:
-    - task: Delay@1
-      condition: and(succeeded(),ne(coalesce(variables.serviceConnectionTestPipelineId,'empty'),'empty'),ne(variables['TF_VAR_azdo_service_connection_type'], 'ACR'))
-      displayName: "Wait for changes to propagate"
-      inputs:
-        delayForMinutes: 1
-
     - task: AzureCLI@2
       condition: and(succeeded(),ne(coalesce(variables.serviceConnectionTestPipelineId,'empty'),'empty'),ne(variables['TF_VAR_azdo_service_connection_type'], 'ACR'))
       displayName: 'Test Service Connection'
@@ -284,6 +278,9 @@ jobs:
           }
           az devops service-endpoint update --id $(terraform.azdo_service_connection_id) `
                                             --enable-for-all true
+
+          Write-Host "Waiting 60 seconds for infrastructure changes to propagate and prevent a race condition..."
+          Start-Sleep -Seconds 50
 
           Write-Host "Running the test pipeline with parameter serviceConnection=$(terraform.azdo_service_connection_name)..."
           az pipelines run --id $(serviceConnectionTestPipelineId) `
