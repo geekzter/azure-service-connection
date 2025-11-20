@@ -244,6 +244,7 @@ jobs:
       failOnStandardError: true
       workingDirectory: '$(terraformDirectory)'
     env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken) # Used for OIDC token refresh directly from TF providers
       TF_VAR_azdo_creates_identity: $(TF_VAR_azdo_creates_identity)
       TF_VAR_azdo_organization_url: $(System.CollectionUri)
       TF_VAR_azdo_project_name: $(System.TeamProject)
@@ -277,6 +278,9 @@ jobs:
           }
           az devops service-endpoint update --id $(terraform.azdo_service_connection_id) `
                                             --enable-for-all true
+
+          Write-Host "Waiting 1 minute for infrastructure changes to propagate and prevent a race condition..."
+          Start-Sleep -Seconds 60
 
           Write-Host "Running the test pipeline with parameter serviceConnection=$(terraform.azdo_service_connection_name)..."
           az pipelines run --id $(serviceConnectionTestPipelineId) `
