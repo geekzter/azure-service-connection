@@ -212,8 +212,7 @@ Generated with [terraform-docs](https://terraform-docs.io/).
 | Name | Version |
 |------|---------|
 | azuread | 2.53.1 |
-| azurerm | 4.31.0 |
-| external | 2.3.5 |
+| azurerm | 4.54.0 |
 | random | 3.7.2 |
 | terraform | n/a |
 
