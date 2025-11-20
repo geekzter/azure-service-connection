@@ -244,6 +244,7 @@ jobs:
       failOnStandardError: true
       workingDirectory: '$(terraformDirectory)'
     env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken) # Used for OIDC token refresh directly from TF providers
       TF_VAR_azdo_creates_identity: $(TF_VAR_azdo_creates_identity)
       TF_VAR_azdo_organization_url: $(System.CollectionUri)
       TF_VAR_azdo_project_name: $(System.TeamProject)

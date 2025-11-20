@@ -14,17 +14,8 @@ terraform {
   required_version             = "~> 1.9"
 }
 
-data external azdo_token {
-  program                      = [
-    "az", "account", "get-access-token", 
-    "--resource", "499b84ac-1321-427f-aa17-267ca6975798", # Azure DevOps
-    "--query","{accessToken:accessToken}",
-    "-o","json"
-  ]
-}
 provider azuredevops {
   org_service_url              = local.azdo_organization_url
-  personal_access_token        = data.external.azdo_token.result.accessToken
 }
 
 provider azurerm {
